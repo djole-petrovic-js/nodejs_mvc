@@ -1,0 +1,98 @@
+
+        *******************************************
+        Date : 2018-4-27 15:38:45
+        Not allowed : 
+
+        Error: Not allowed 
+
+        Stack trace : Error: Not allowed
+    at CheckIfLoggedIn.handle (/home/djole/Desktop/MVC/app/Middlewares/CheckIfLoggedIn.js:10:19)
+    at App.applyMiddleware (/home/djole/Desktop/MVC/App.js:140:24)
+    at Server.http.createServer (/home/djole/Desktop/MVC/bin.js:51:40)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7) 
+
+        *******************************************
+      
+        *******************************************
+        Date : 2018-4-27 15:39:20
+        Error: Not allowed 
+
+        Stack trace : Error: Not allowed
+    at CheckIfLoggedIn.handle (/home/djole/Desktop/MVC/app/Middlewares/CheckIfLoggedIn.js:10:19)
+    at App.applyMiddleware (/home/djole/Desktop/MVC/App.js:140:24)
+    at Server.http.createServer (/home/djole/Desktop/MVC/bin.js:51:40)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7) 
+
+        *******************************************
+      
+        *******************************************
+        Date : 2018-4-27 15:44:21
+        Error: Nije bilo manje od 0.5 xD 
+
+        Stack trace : Error: Nije bilo manje od 0.5 xD
+    at AdminController.index (/home/djole/Desktop/MVC/app/Controllers/AdminController.js:7:21)
+    at Server.http.createServer (/home/djole/Desktop/MVC/bin.js:78:40)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7) 
+
+        *******************************************
+      
+        *******************************************
+        Date : 2018-4-27 15:53:52
+        Error: ENOENT: no such file or directory, open '/home/djole/Desktop/MVC/app/Views/partials/include1.html' 
+
+        Stack trace : Error: ENOENT: no such file or directory, open '/home/djole/Desktop/MVC/app/Views/partials/include1.html' 
+
+        *******************************************
+      
+        *******************************************
+        Date : 2018-4-27 16:02:29
+        Error: Cannot find module '/home/djole/Desktop/MVC/app/Controllers/LoginController.js' 
+
+        Stack trace : Error: Cannot find module '/home/djole/Desktop/MVC/app/Controllers/LoginController.js'
+    at Function.Module._resolveFilename (module.js:542:15)
+    at Function.Module._load (module.js:472:25)
+    at Module.require (module.js:585:17)
+    at require (internal/module.js:11:18)
+    at Server.http.createServer (/home/djole/Desktop/MVC/bin.js:66:30)
+    at <anonymous> 
+
+        *******************************************
+      
+        *******************************************
+        Date : 2018-4-27 16:09:08
+        TypeError: form.bindValues is not a function 
+
+        Stack trace : TypeError: form.bindValues is not a function
+    at LoginRegisterController.validate (/home/djole/Desktop/MVC/app/lib/Controller.js:7:10)
+    at LoginRegisterController.registerDo (/home/djole/Desktop/MVC/app/Controllers/LoginRegisterController.js:9:23)
+    at Server.http.createServer (/home/djole/Desktop/MVC/bin.js:79:40)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7) 
+
+        *******************************************
+      
+        *******************************************
+        Date : 2018-4-27 16:16:31
+        ReferenceError: errors is not defined 
+
+        Stack trace : ReferenceError: errors is not defined
+    at eval (eval at compile (/home/djole/Desktop/MVC/app/lib/View.js:49:38), <anonymous>:3:910)
+    at View.compile (/home/djole/Desktop/MVC/app/lib/View.js:55:12)
+    at <anonymous> 
+
+        *******************************************
+      
+        *******************************************
+        Date : 2018-4-27 16:17:23
+        ReferenceError: show is not defined 
+
+        Stack trace : ReferenceError: show is not defined
+    at eval (eval at compile (/home/djole/Desktop/MVC/app/lib/View.js:49:38), <anonymous>:3:680)
+    at View.compile (/home/djole/Desktop/MVC/app/lib/View.js:55:12)
+    at <anonymous> 
+
+        *******************************************
+      

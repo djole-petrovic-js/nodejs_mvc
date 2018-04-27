@@ -1,0 +1,19 @@
+@extends('layout')
+
+@section('title')
+  |% title %|
+@endsection
+
+@section('content')
+  |% css('custom') %|
+  |% js('index') %|
+
+  <h1>User Panel</h1>
+  |% for ( const user of users ) { %|
+    <h1 class="test">|% user.username %|</h1>
+  |% } %|
+@endsection
+
+@section('scripts')
+  <script src="/public/js/main.js"></script>
+@endsection

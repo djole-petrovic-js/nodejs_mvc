@@ -1,0 +1,13 @@
+
+        *******************************************
+        Date : 2018-4-27 15:45:29
+        Error: Nije bilo manje od 0.5 xD 
+
+        Stack trace : Error: Nije bilo manje od 0.5 xD
+    at AdminController.index (/home/djole/Desktop/MVC/app/Controllers/AdminController.js:7:21)
+    at Server.http.createServer (/home/djole/Desktop/MVC/bin.js:78:40)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7) 
+
+        *******************************************
+      

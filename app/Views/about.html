@@ -1,0 +1,17 @@
+@extends('layout')
+
+@section('title') About us @endsection
+
+@section('content')
+  <h1>About us</h1>
+  <p>First name : |% name %|</p>
+  <p>Last name : |% lastname %|</p>
+  |% if ( show && show == true ) { %|
+    <h1>Prikazalo se</h1>
+  |% } else { %|
+    <h2>Znaci</h2>
+    <p>Radi krek</p>
+  |% } %|
+
+
+@endsection
