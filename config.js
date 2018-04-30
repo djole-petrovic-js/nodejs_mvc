@@ -7,6 +7,8 @@ module.exports = {
     APP:path.join(__dirname,'app'),
     CONTROLLERS:path.join(__dirname,'app','Controllers'),
     VIEWS:path.join(__dirname,'app','Views'),
+    MODELS:path.join(__dirname,'app','Models'),
+    MIGRATIONS:path.join(__dirname,'app','Migrations'),
     LIB:path.join(__dirname,'app','lib'),
     MIDDLEWARES:path.join(__dirname,'app','Middlewares')
   },

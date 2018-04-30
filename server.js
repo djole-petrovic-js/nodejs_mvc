@@ -4,17 +4,9 @@ const path = require('path');
 
 app.assets('public');
 
-app.middleware((req,res,next) => {
-  const error = new Error();
-  error.message = 'greska kao neka jebiga';
-
-  return next();
-});
-
-app.middleware('CheckIfLoggedIn');
+app.middleware('CSRF');
 app.get('/','IndexController@index').name('index');
 app.get('/about','IndexController@about').name('about');
-app.middleware('CheckSession');
 app.get('/users','UsersController@index').name('users');
 app.get('/index/xhr','IndexController@xhr');
 

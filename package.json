@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.5.1"
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.5.1",
+    "mysql": "^2.15.0"
   }
 }

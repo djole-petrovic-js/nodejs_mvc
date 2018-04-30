@@ -6,11 +6,12 @@
   <h1>About us</h1>
   <p>First name : |% name %|</p>
   <p>Last name : |% lastname %|</p>
-  |% if ( show && show == true ) { %|
+  |% if ( get('show') ) { %|
     <h1>Prikazalo se</h1>
   |% } else { %|
     <h2>Znaci</h2>
     <p>Radi krek</p>
+    <h1>Nije se prikazalo</h1>
   |% } %|
 
 

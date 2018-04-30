@@ -4,7 +4,7 @@ const { PATHS:{ VIEWS } } = require('../config');
 
 module.exports = {
   redirect:(res) => (url) => {
-    res.writeHead(307,{ Location:url });
+    res.writeHead(302,{ Location:url });
 
     return res.end();
   },

@@ -1,6 +1,12 @@
 require('./app/utils/loadEnv')('./.env');
 require('./app/utils/registerGlobals')();
 
+// Da implementiram CSRF, kukije da sredim malo, da bude same-origin
+
+const Migration = use('lib/Migration');
+
+Migration.checkMigrationStatus();
+
 const {
   SITE_NAME,
   PATHS:{
@@ -27,13 +33,13 @@ const
   requestMethods   = require('./config/requestMethods'),
   ErrorsController = use('Controllers/ErrorsController');
 
-
 const server = http.createServer(async (req,res) => {
   const Errors = new ErrorsController();
 
-  app.applyAllMiddlewares(req,res,requestMethods,responseMethods);
-
   try {
+    await app.applyRequestMiddlewares(req,requestMethods);
+    await app.applyResponseMiddlewares(res,responseMethods);
+
     const requestObject = new URL(req.url,SITE_NAME);
     const assetsDir = app.assetsDir();
 
@@ -44,6 +50,12 @@ const server = http.createServer(async (req,res) => {
 
     if ( assetsDir && requestObject.pathname.startsWith(assetsDir) ) {
       return app.handleStaticFilesRequests(req,res);
+    }
+
+    await app.atachQueryParams(req,requestObject);
+
+    if ( ['POST'].includes(req.method) ) {
+      await app.extractBody(req,res);
     }
 
     for ( const { controller,route,method } of app.getRoutes() ) {
@@ -70,17 +82,12 @@ const server = http.createServer(async (req,res) => {
         throw new Error(`Method ${ method } not found on controller ${ ctrl }`);
       }
 
-      await app.atachQueryParams(req,requestObject);
-
-      if ( req.method === 'POST' ) {
-        await app.extractBody(req,res);
-      }
-
       return await mainCtrl[ctrlMethod](req,res);
     }
 
     return await Errors.handle404(req,res);
   } catch(e) {
+    console.log(e);
     Logger.log(e);
 
     await Errors.handleAllErrors(req,res,e);

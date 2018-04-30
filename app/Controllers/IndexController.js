@@ -1,4 +1,5 @@
 const Controller = use('lib/Controller');
+const Password = use('lib/Password');
 
 class IndexController extends Controller {
   async index(req,res) {
@@ -9,19 +10,8 @@ class IndexController extends Controller {
     return res.render('about',{
       name:'Djole',
       lastname:'Petrovic',
+      show:true
     });
-  }
-
-  async login(req,res) {
-    const { username,password } = req.query;
-
-    return res.json({ username,password })
-  }
-
-  async loginPOST(req,res) {
-    const isValid = this.validate(req.body,{});
-
-    return res.send('proslo kao');
   }
 
   async xhr(req,res) {

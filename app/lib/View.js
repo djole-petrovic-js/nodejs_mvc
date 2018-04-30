@@ -8,9 +8,7 @@ class View {
   }
 
   async loadViewGlobalMethods(data) {
-    for ( const [name,fn] of Object.entries(viewGlobalMethods) ) {
-      data[name] = fn;
-    }
+    Object.entries(viewGlobalMethods).forEach(([name,fn]) => data[name] = fn);
   }
 
   addLine(code,line,isJS = false) {
@@ -31,8 +29,8 @@ class View {
     await this.loadViewGlobalMethods(data);
 
     let  
-      code = 'var r=[];\n;',
-      match = null,
+      code   = 'var r=[];\n;',
+      match  = null,
       cursor = 0;
 
     while ( match = this.re.exec(this.html) ) {
@@ -47,10 +45,7 @@ class View {
 
     const keys = Object.keys(data);
     const fn = Function(...keys,code.replace(/[\r\t\n]/g, ''));
-
-    const args = keys.reduce((acc,key) => {
-      acc.push(data[key]); return acc;
-    },[]);
+    const args = keys.map(x => data[x]);
     
     return fn(...args);
   }

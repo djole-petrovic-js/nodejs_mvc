@@ -16,5 +16,12 @@ module.exports = {
     }
 
     return url.route;
+  },
+  get(varStr) {
+    try {
+      return global.templateVars[varStr];
+    } catch(e) {
+      return undefined;
+    }
   }
 }

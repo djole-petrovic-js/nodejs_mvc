@@ -145,13 +145,20 @@ class App {
     return error ? error : isNextCalled;
   }
 
-  applyAllMiddlewares(req,res,reqMiddlewares,resMiddlewares) {
+  async applyRequestMiddlewares(req,reqMiddlewares) {
+    for ( const [name,middleware] of Object.entries(reqMiddlewares) ) {
+      if ( typeof middleware === 'function' ) {
+        req[name] = await middleware(req);
+      } else {
+        req[name] = {};
+        await this.applyRequestMiddlewares(req[name],reqMiddlewares[name]);
+      }
+    }
+  }
+
+  async applyResponseMiddlewares(res,resMiddlewares) {
     for ( const [name,middleware] of Object.entries(resMiddlewares) ) {
       res[name] = middleware(res);
-    }
-
-    for ( const [name,middleware] of Object.entries(reqMiddlewares) ) {
-      req[name] = middleware(req);
     }
   }
 }

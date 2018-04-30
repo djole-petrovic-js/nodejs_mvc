@@ -5,16 +5,27 @@
 @section('content')
   <form action="|% url('registerDo') %|" method="POST">
     <h1>Username</h1>
+      <input type="hidden" name="_token" value="|% get('_token') %|">
       <input type="text" placeholder="username" name="username">
       <br>
       <h1>Password</h1>
       <input type="password" placeholder="password" name="password">
       <br>
+      <h1>Email</h1>
+      <input type="text" placeholder="Email" name="email">
+      <br>
       <button type="submit">Submit</button>
     </form>
   </form>
-
-  |% if ( errors ) { %|
-    <h1>Error occured some of them!</h1>
+  
+  |% if ( get('message') ) { %|
+    <h1>|% get('message') %|</h1>
   |% } %|
+
+  |% if ( get('errors') ) { %|
+    |% for ( const error of get('errors') ) { %|
+      <h1>|% error %|</h1>
+    |% } %|
+  |% } %|
+  
 @endsection

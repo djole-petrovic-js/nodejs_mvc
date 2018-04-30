@@ -19,7 +19,9 @@ class Logger {
       const logPath = path.join(PATH,(location ? location : DEFAULT_NAME)  + EXTENSION);
 
       await fs.writeFileAsync(logPath,content,{ flag:'a' });
-    } catch(e) { }
+    } catch(e) {
+      console.error('Could not logg error ' + e);
+    }
   }
 }
 

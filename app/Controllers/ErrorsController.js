@@ -26,7 +26,7 @@ class ErrorsController extends Controller {
     try {
       return await res.render('errors',{
         message:error.message,
-        error:process.env.ENV === 'DEVELOPMENT' ? error.stack : '',
+        error:process.env.ENV === 'DEVELOPMENT' ? error.stack.split(' at ').join('<br/> at ') : '',
         status:error.status || 500
       });
     } catch(e) {
