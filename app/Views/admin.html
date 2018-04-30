@@ -4,4 +4,28 @@
 
 @section('content')
   <h1>Admin Panel</h1>
+  |% if ( get('users').length === 0 ) { %|
+    <h1>No users at the moment in database!</h1>
+  |% } else { %|
+    <table>
+      <thead>
+        <tr>
+          <td>ID</td>
+          <td>Username</td>
+          <td>Email</td>
+          <td>Registered At</td>
+        </tr>
+      </thead>
+      <tbody>
+        |% for ( const user of users ) { %|
+          <tr>
+            <td>|% user.id_user %|</td>
+            <td>|% user.username | 'LOWER' %|</td>
+            <td>|% user.email | 'CAPITALIZE' %|</td>
+            <td>|% user.created_at | 'DATE:D/M/Y' %|</td>
+          </tr>
+        |% } %|
+      </tbody>
+    </table>
+  |% } %|
 @endsection

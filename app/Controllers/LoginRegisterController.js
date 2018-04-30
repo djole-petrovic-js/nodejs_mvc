@@ -16,7 +16,7 @@ class LoginRegisterController extends Controller {
       data.errors = messages;
     }
 
-    return res.render('register',data);
+    return this.render(res,'register',data);
   }
 
   async registerDo(req,res) {
@@ -30,7 +30,7 @@ class LoginRegisterController extends Controller {
 
       await req.flash.set('messages',errors);
 
-      return res.redirect('/register');
+      return this.redirect(res,'/register');
     }
 
     const { username,password,email } = req.body;
@@ -39,7 +39,7 @@ class LoginRegisterController extends Controller {
     if ( usernameExists.length !== 0 ) {
       await req.flash.set('message','Username aleady exists!');
 
-      return res.redirect('/register');
+      return this.redirect(res,'/register');
     }
 
     const emailExists = await User.all({ where:{ email } });
@@ -47,7 +47,7 @@ class LoginRegisterController extends Controller {
     if ( emailExists.length !== 0 ) {
       await req.flash.set('message','Email aleady exists!');
 
-      return res.redirect('/register');
+      return this.redirect(res,'/register');
     }
 
     const hash = await Password.hash(password);
@@ -58,7 +58,7 @@ class LoginRegisterController extends Controller {
       email
     });
 
-    return res.send('yeah');
+    return this.send(res,'yeah');
   }
 }
 

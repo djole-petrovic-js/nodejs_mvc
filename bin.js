@@ -1,13 +1,23 @@
 require('./app/utils/loadEnv')('./.env');
 require('./app/utils/registerGlobals')();
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('||||||||||||||||||||||||||');
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+});
+
 // Da implementiram CSRF, kukije da sredim malo, da bude same-origin
 // Nekako izgleda da cudno radi, treba da se proveri
 
-//commit
-// changed App location to libs.
-// added PUBLIC path to config
-// added requireConfig global method
+// View formaters da mogu vise filtera da se ubace!
+// Modeli da ima relacije!
+
+//git
+// Added filters and sanitization
+// Moved response methods to Controller class
+// Improved Error Handling
+// Moved request methods to Controller class???
+// Move view methods to View Class
 
 const Migration = use('lib/Migration');
 
@@ -23,10 +33,10 @@ const {
     ROOT,
     MIDDLEWARES,
   }
-} = require('./config');
+} = requireConfig();
 
 const app = require('./server');
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const 
   http             = require('http'),
@@ -35,7 +45,6 @@ const
   TemplateEngine   = use('lib/TemplateEngine'),
   Logger           = use('lib/Logger'),
   { URL }          = require('url'),
-  responseMethods  = require('./config/responseMethods'),
   requestMethods   = require('./config/requestMethods'),
   ErrorsController = use('Controllers/ErrorsController');
 
@@ -44,7 +53,6 @@ const server = http.createServer(async (req,res) => {
 
   try {
     await app.applyRequestMiddlewares(req,requestMethods);
-    await app.applyResponseMiddlewares(res,responseMethods);
 
     const requestObject = new URL(req.url,SITE_NAME);
     const assetsDir = app.assetsDir();
@@ -94,9 +102,9 @@ const server = http.createServer(async (req,res) => {
     return await Errors.handle404(req,res);
   } catch(e) {
     console.log(e);
-    Logger.log(e);
+    // Logger.log(e);
 
-    await Errors.handleAllErrors(req,res,e);
+    await Errors.handleAllErrors(req,res,e)
   }
 });
 

@@ -1,12 +1,11 @@
 const Controller = use('lib/Controller');
+const User = use('Models/User');
 
 class AdminController extends Controller {
   async index(req,res) {
-    return res.render('admin');
-  }
+    const users = await User.all();
 
-  async config(req,res) {
-    return res.send('macka neka');
+    return await this.render(res,'admin',{ users });
   }
 }
 
