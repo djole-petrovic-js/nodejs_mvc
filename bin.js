@@ -2,6 +2,12 @@ require('./app/utils/loadEnv')('./.env');
 require('./app/utils/registerGlobals')();
 
 // Da implementiram CSRF, kukije da sredim malo, da bude same-origin
+// Nekako izgleda da cudno radi, treba da se proveri
+
+//commit
+// changed App location to libs.
+// added PUBLIC path to config
+// added requireConfig global method
 
 const Migration = use('lib/Migration');
 

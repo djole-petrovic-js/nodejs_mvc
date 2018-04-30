@@ -12,6 +12,7 @@ module.exports = {
     LIB:path.join(__dirname,'app','lib'),
     MIDDLEWARES:path.join(__dirname,'app','Middlewares')
   },
+  PUBLIC:'/public',
   SITE_NAME:'http://localhost:3000',
   LOGS:{
     DEFAULT_NAME:'main',

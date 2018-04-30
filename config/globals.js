@@ -15,5 +15,9 @@ module.exports = {
   },
   requireFromConfig: (moduleName) => {
     return require(path.join(ROOT,'config',moduleName));
+  },
+  requireConfig() {
+    return require(path.join(ROOT,'config'));
   }
+
 }

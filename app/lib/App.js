@@ -1,21 +1,16 @@
 const fs = requirePromisified('fs');
 const path = require('path');
-const { PATHS:{ ROOT,MIDDLEWARES } } = require('./config');
+const { PATHS:{ ROOT,MIDDLEWARES },PUBLIC } = requireConfig();
 const querystring = require('querystring');
 const Route = use('lib/Route');
- 
+
 class App {
   constructor() {
-    this._assets = '';
     this._routes = [];
   }
 
-  assets(assetsDir) {
-    this._assets = '/' + assetsDir;
-  }
-
   assetsDir() {
-    return this._assets;
+    return PUBLIC;
   }
 
   getRoutes() {

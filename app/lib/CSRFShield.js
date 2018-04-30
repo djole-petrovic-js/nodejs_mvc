@@ -26,18 +26,18 @@ class CSRFShield {
   }
 
   static verify(req) {
-    return CSRFShield.checkTokenAndCookie(req);
+    return CSRFShield.checkOrigin(req) && CSRFShield.checkTokenAndCookie(req);
   }
 
   static checkOrigin(req) {
-    if ( !req.headers.origin && !req.headers.referer ) {
+    if ( !req.headers.origin || !req.headers.referer ) {
       return false;
     }
 
     const url = new URL(req.headers.origin || req.headers.referer);
     const expectedProtocol = 'http:';
-    const expectedOrigin = 'http://localhost:3001';
-    const expectedPort = '3001';
+    const expectedOrigin = 'http://localhost:3000';
+    const expectedPort = '3000';
 
     if (
       expectedOrigin   !== url.origin   ||

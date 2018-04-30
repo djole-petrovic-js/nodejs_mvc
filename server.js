@@ -1,8 +1,6 @@
-const App = require('./App');
+const App = use('lib/App');
 const app = new App();
 const path = require('path');
-
-app.assets('public');
 
 app.middleware('CSRF');
 app.get('/','IndexController@index').name('index');
