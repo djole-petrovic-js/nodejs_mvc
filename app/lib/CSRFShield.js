@@ -1,4 +1,5 @@
 const { URL } = require('url');
+const Cookies = use('lib/Cookies');
 
 class CSRFShield {
   static _generateToken() {
@@ -30,7 +31,7 @@ class CSRFShield {
   }
 
   static checkOrigin(req) {
-    if ( !req.headers.origin || !req.headers.referer ) {
+    if ( !req.headers.origin && !req.headers.referer ) {
       return false;
     }
 
@@ -39,15 +40,11 @@ class CSRFShield {
     const expectedOrigin = 'http://localhost:3000';
     const expectedPort = '3000';
 
-    if (
+    return !(
       expectedOrigin   !== url.origin   ||
       expectedProtocol !== url.protocol ||
       expectedPort     !== url.port
-    ) {
-      return false;
-    }
-
-    return true;
+    );
   }
 
   static checkTokenAndCookie(req) {
@@ -55,20 +52,7 @@ class CSRFShield {
 
     if ( !tokenFromBody ) return false;
 
-    if ( !req.headers.cookie ) return false;
-
-    const tokenFromCookie = req.headers.cookie
-      .split(';')
-      .filter(x => x && x !== '')
-      .map(x => x.split('='))
-      .map(x => [x[0].trim(),x[1].trim()])
-      .find(cookie => cookie[0] === '_token');
-
-    if ( !tokenFromCookie ) return false;
-
-    if ( tokenFromCookie[1] !== tokenFromBody ) return false;
-
-    return true;
+    return Cookies.get(req,'_token') === tokenFromBody;
   }
 }
 

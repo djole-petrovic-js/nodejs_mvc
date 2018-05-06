@@ -3,6 +3,7 @@ const app = new App();
 const path = require('path');
 
 app.middleware('CSRF');
+app.middleware('Session');
 app.get('/','IndexController@index').name('index');
 
 app.group('/admin',() => {

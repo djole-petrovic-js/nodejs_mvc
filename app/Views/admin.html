@@ -20,9 +20,10 @@
         |% for ( const user of users ) { %|
           <tr>
             <td>|% user.id_user %|</td>
-            <td>|% user.username | 'LOWER' %|</td>
-            <td>|% user.email | 'CAPITALIZE' %|</td>
-            <td>|% user.created_at | 'DATE:D/M/Y' %|</td>
+            <td>|% user.username | 'upper' | 'limitTo:3' %|</td>
+            <td>|% user.email | 'capitalize' %|</td>
+            <td>|% user.created_at | 'date:dd/M/Y' | 'upper' %|</td>
+            <td>|% 5 | 'currency' %|</td>
           </tr>
         |% } %|
       </tbody>

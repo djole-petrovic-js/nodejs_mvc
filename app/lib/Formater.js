@@ -1,16 +1,16 @@
 const moment = require('moment');
 
 class Formater {
-  static upper(str) {
+  upper(str) {
     return str.toUpperCase();
   }
 
-  static lower(str) {
-    return str.toLowerCase();
+  lower(str) {
+    return str.toLowerCase(); 
   }
 
-  // maybe do it without moment dipendency?
-  static date(str,format) {
+  // maybe do it without moment dependency?
+  date(str,format) {
     if ( typeof str === 'object' ) {
       str = str.toISOString();
     }
@@ -18,8 +18,24 @@ class Formater {
     return moment(str).format(format);
   }
 
-  static capitalize(str) {
+  capitalize(str) {
     return str[0].toUpperCase() + str.slice(1);
+  }
+
+  currency(str,currencyVal) {
+    str = Number(str);
+
+    return Number.isNaN(str)
+      ? str
+      : String(str.toFixed(2)) + ( currencyVal ? currencyVal : '$' );
+  }
+
+  limitTo(str,num) {
+    num = Number(num);
+
+    if ( !num || Number.isNaN(num) ) return str;
+
+    return str.slice(0,num);
   }
 }
 

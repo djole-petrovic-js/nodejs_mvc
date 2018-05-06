@@ -3,7 +3,7 @@ const bluebird = require('bluebird');
 
 const connection = mysql.createPool({
   port: '/var/run/mysqld/mysqld.sock',
-  pool : 100,
+  connectionLimit : 100,
   host : process.env.DB_HOST,
   user : process.env.DB_USER,
   password : process.env.DB_PASSWORD,

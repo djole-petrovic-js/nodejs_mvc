@@ -2,6 +2,19 @@ const Form = use('lib/Form');
 const { PATHS:{ VIEWS } } = requireConfig();
 const path = require('path');
 const TemplateEngine = use('lib/TemplateEngine');
+const http = require('http');
+const connection = use('db/connection');
+
+connection.getConnection((err) => {
+  Controller.isConnected = !err;
+  // config set and get methods for flash messages
+  // depend on whether it is connected to db or not
+  const flash = use(`lib/${ Controller.isConnected ? 'FlashDB' : 'FlashLocal' }`);
+
+  flash.loadFlash();
+
+  Controller.flashMessages = { get:flash.get,set:flash.set };
+});
 
 class Controller {
   validate(data,rules) {
@@ -11,6 +24,54 @@ class Controller {
     form.validate();
 
     return form;
+  }
+
+  get flash() {
+    return {
+      get:Controller.flashMessages.get,
+      set:Controller.flashMessages.set,
+    }
+  }
+
+  fetch(options,dataToSend) {
+    return new Promise((resolve,reject) => {
+      const request = http.request(options,(response) => {
+        let data = '';
+
+        if ( response.statusCode < 200 && response.statusCode > 299 ) {
+          const error = new Error('Request failed, status code : ' + response.statusCode);
+          error.status = response.statusCode;
+
+          return reject(error);
+        }
+
+        response.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        response.on('end',() => {
+          try {
+            data = JSON.parse(data);
+          } catch(e) { }
+
+          resolve(data);
+        });
+      });
+
+      request.on('error',(error) => {
+        return reject(error);
+      })
+
+      if ( dataToSend ) {
+        try {
+          dataToSend = JSON.stringify(dataToSend);
+        } catch(e) { }
+
+        request.write(dataToSend);
+      }
+
+      request.end();
+    });
   }
 
   // request methods

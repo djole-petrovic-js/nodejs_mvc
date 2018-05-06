@@ -106,11 +106,7 @@ class TemplateEngine {
   static async compileTemplateWithData(html,data) {
     if ( Object.keys(data) === 0 ) return;
 
-    global.templateVars = data;
-
     const compiledTemplate = await new View(html).compile(data);
-
-    global.templateVars = null;
 
     return compiledTemplate;
   }

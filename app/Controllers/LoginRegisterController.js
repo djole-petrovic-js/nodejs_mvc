@@ -1,11 +1,12 @@
 const Controller = use('lib/Controller');
 const User = use('Models/User');
 const Password = use('lib/Password');
+const Session = use('lib/SessionManager');
 
 class LoginRegisterController extends Controller {
   async registerShow(req,res) {
-    const messages = await req.flash.get('messages');
-    const message = await req.flash.get('message');
+    const messages = await this.flash.get('messages');
+    const message = await this.flash.get('message');
     const data = { _token:req.csrfToken() };
 
     if ( message ) {
@@ -28,7 +29,7 @@ class LoginRegisterController extends Controller {
     if ( !form.isValid() ) {
       const errors = form.errorMessages();
 
-      await req.flash.set('messages',errors);
+      await this.flash.set('messages',errors);
 
       return this.redirect(res,'/register');
     }
@@ -37,7 +38,7 @@ class LoginRegisterController extends Controller {
     const usernameExists = await User.all({ where:{ username } });
 
     if ( usernameExists.length !== 0 ) {
-      await req.flash.set('message','Username aleady exists!');
+      await this.flash.set('message','Username aleady exists!');
 
       return this.redirect(res,'/register');
     }
@@ -45,20 +46,24 @@ class LoginRegisterController extends Controller {
     const emailExists = await User.all({ where:{ email } });
 
     if ( emailExists.length !== 0 ) {
-      await req.flash.set('message','Email aleady exists!');
+      await this.flash.set('message','Email aleady exists!');
 
       return this.redirect(res,'/register');
     }
 
     const hash = await Password.hash(password);
 
-    await User.insert({
+    const user = {
       username,
       password:hash,
       email
-    });
+    };
 
-    return this.send(res,'yeah');
+    await User.insert(user);
+    await Session.set(req,user);
+    await this.flash.set('message','Successfull registration  !');
+
+    return this.redirect(res,'/register');
   }
 }
 

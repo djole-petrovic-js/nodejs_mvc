@@ -54,6 +54,26 @@ class Model {
     return await this.executeQuery(sql,Object.values(data));
   }
 
+  static async update(data) {
+    let updateSql = `UPDATE ${this.name} SET `;
+    let values = [], whereSQL = '';
+
+    const setColumns = Object.entries(data)
+      .filter(([key]) => !['where'].includes(key))
+      .map(([key,value]) => `${key} = ${typeof value === 'string' ? "'" + value + "'" : value}`)
+      .join(',');
+
+    updateSql += setColumns;
+
+    if ( data.where ) {
+      [whereSQL,values] = this.createWhereStmt(data.where);
+
+      updateSql += ' ' + whereSQL;
+    }
+
+    return await this.executeQuery(updateSql,values);
+  }
+
   static async delete(data) {
     if ( !data ) {
       throw new Error('When deleting you have to provide arguments.');

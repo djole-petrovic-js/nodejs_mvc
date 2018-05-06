@@ -1,24 +1,27 @@
-const flash = {};
-
 class FlashLocal {
-  get(key) {
-    let value = flash[key];
+  static loadFlash() {
+    FlashLocal.flash = {};
+  }
+
+  static async get(key) {
+    console.log('pozvano');
+    let value = FlashLocal.flash[key];
 
     try {
       value = JSON.parse(value);
     } catch(e) { }
 
-    delete flash[key];
+    delete FlashLocal.flash[key];
 
     return value;
   }
 
-  set(key,value) {
+  static async set(key,value) {
     try {
       val = JSON.stringify(val);
     } catch(e) {  }
 
-    flash[key] = value;
+    FlashLocal.flash[key] = value;
   }
 }
 

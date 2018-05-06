@@ -1,14 +1,17 @@
 const CSRFShield = use('lib/CSRFShield');
+const Cookies = use('lib/Cookies');
 
 class CSRF {
   async handle(req,res,next) {
-    const ip = (req.headers['x-forwarded-for'] || '').split(',')[0]  || req.connection.remoteAddress;
-
     if ( req.method === 'GET' ) {
       const token = CSRFShield.csrfToken();
 
       req.csrfToken = () => token;
-      res.setHeader('Set-Cookie','_token=' + token);
+
+      Cookies.set(res,{
+        name:'_token',
+        value:token
+      })
 
       return next();
     }

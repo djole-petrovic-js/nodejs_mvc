@@ -19,14 +19,6 @@ class View {
     return `<link rel="stylesheet" href="${ path.join(PUBLIC,'css',str + '.css') }"/>`;
   }
 
-  static get(varStr) {
-    try {
-      return global.templateVars[varStr];
-    } catch(e) {
-      return undefined;
-    }
-  }
-
   static url(name) {
     const routes = app.getRoutes();
 
@@ -41,34 +33,28 @@ class View {
     return url.route;
   }
 
-  static sanitizeInput(str,format) {
-    str = Sanitize.escapeHTML(str);
+  static sanitizeInput(str,...formats) {
+    if ( formats.length > 0 ) {
+      const formater = new Formater();
 
-    if ( format ) {
-      let formater, params;
+      for ( const format of formats ) {
+        const [method,...params] = format.split(':');
 
-      if ( !format.includes(':') ) {
-        formater = format.toLowerCase();
-        params = [];
-      } else {
-        const indexOfFirstColon = format.indexOf(':');
-        
-        formater = format.slice(0,indexOfFirstColon).toLowerCase();
-        params = format.slice(indexOfFirstColon + 1).split(':');
+        if ( typeof formater[method] !== 'function' ) {
+          throw new Error(`Format ${ method } not found, check your view file!`);
+        }
+
+        str = formater[method](str,...params);
       }
-
-      if ( typeof Formater[formater] !== 'function' ) {
-        throw new Error(`Formater ${ formater } is undefined, check your view!`);
-      }
-
-      str = Formater[formater](str,...params);
     }
+
+    str = Sanitize.escapeHTML(str);
 
     return str;
   }
 
   static injectWhitelistedMethods(data) {
-    const methods = ['js','css','url','get','sanitizeInput'];
+    const methods = ['js','css','url','sanitizeInput'];
 
     for ( const method of methods ) {
       data[method] = View[method];
@@ -80,15 +66,16 @@ class View {
       if ( line.match(this.reExp) ) {
         code += line + '\n;';
       } else {
-        const [str,format] = line.split('|');
-        const fnRegex = /\((.*?)\)/;
         // check if it it contains function call, if not , just sanitize input
         // maybe should add if it should escape returned html or not...?
+        const [str,...format] = line.split('|');
+        const fnRegex = /\((.*?)\)/;
+        const finalFormat = format.length === 0 ? "" : format;
 
         if ( line.match(fnRegex) ) {
-          code += 'try { r.push(' + line + '); } catch(e) { r.push(sanitizeInput(' + str + ','+ format +'));\n }';
+          code += 'try {r.push('+line+');} catch(e) {r.push(sanitizeInput(' + str + ','+ finalFormat +'));\n }';
         } else {
-          code += 'r.push(sanitizeInput(' + str + ','+ format +'));\n';
+          code += 'r.push(sanitizeInput(' + str + ','+ finalFormat +'));\n';
         }
       }
     } else {
@@ -100,9 +87,11 @@ class View {
 
   async compile(data) {
     let  
-      code   = 'var r=[];\n;',
+      code   = 'const r=[];\n;',
       match  = null,
       cursor = 0;
+
+    code += 'const get = (x) => this[x];';
 
     while ( match = this.re.exec(this.html) ) {
       code = this.addLine(code,this.html.slice(cursor,match.index));
@@ -115,12 +104,12 @@ class View {
     code += 'return r.join("")';
 
     View.injectWhitelistedMethods(data);
-
+    
     const keys = Object.keys(data);
     const fn = Function(...keys,code.replace(/[\r\t\n]/g, ''));
     const args = keys.map(x => data[x]);
     
-    return fn(...args);
+    return fn.bind(data)(...args);
   }
 }
 

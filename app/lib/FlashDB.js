@@ -1,11 +1,6 @@
 class FlashDB {
   static loadFlash() {
-    if ( FlashDB.isLoaded ) {
-      return;
-    }
-
-    FlashDB.Flash = use('Models/Flash');
-    FlashDB.isLoaded = true;
+    FlashDB.Flash = use('Models/Flash')
   }
 
   static async get(key) {

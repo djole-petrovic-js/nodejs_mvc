@@ -8,16 +8,18 @@ process.on('unhandledRejection', (reason, p) => {
 
 // Da implementiram CSRF, kukije da sredim malo, da bude same-origin
 // Nekako izgleda da cudno radi, treba da se proveri
+// Model class to rewrite.
 
-// View formaters da mogu vise filtera da se ubace!
 // Modeli da ima relacije!
 
+// Da pogledam kako laravel struktuira foldere!
+
 //git
-// Added filters and sanitization
-// Moved response methods to Controller class
-// Improved Error Handling
-// Moved request methods to Controller class???
-// Move view methods to View Class
+// Moved request methods to Controller class
+// View now implements multiple formaters.
+// Added fetch metod to Controller
+// Added session management
+// Added cookie management
 
 const Migration = use('lib/Migration');
 
@@ -27,9 +29,6 @@ const {
   SITE_NAME,
   PATHS:{
     CONTROLLERS,
-    VIEWS,
-    LIB,
-    APP,
     ROOT,
     MIDDLEWARES,
   }
@@ -45,15 +44,12 @@ const
   TemplateEngine   = use('lib/TemplateEngine'),
   Logger           = use('lib/Logger'),
   { URL }          = require('url'),
-  requestMethods   = require('./config/requestMethods'),
   ErrorsController = use('Controllers/ErrorsController');
 
 const server = http.createServer(async (req,res) => {
   const Errors = new ErrorsController();
 
   try {
-    await app.applyRequestMiddlewares(req,requestMethods);
-
     const requestObject = new URL(req.url,SITE_NAME);
     const assetsDir = app.assetsDir();
 
